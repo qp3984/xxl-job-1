@@ -1,3 +1,4 @@
+import com.xxl.job.executor.service.jobhandler.KylinRESTfulMethod;
 
 public class KylinRESTfulMethodMain {
 
@@ -6,8 +7,8 @@ public class KylinRESTfulMethodMain {
         KylinRESTfulMethod.login("ADMIN", "KYLIN");
 
         //------------------------------------------------------------
-        String body = "{\"sql\":\"select count(*) from kylin_sales\",\"offset\":0,\"limit\":50000,\"acceptPartial\":false,\"project\":\"learn_kylin\"}";
-        output = KylinRESTfulMethod.query(body);
+//        String body = "{\"sql\":\"select count(*) from kylin_sales\",\"offset\":0,\"limit\":50000,\"acceptPartial\":false,\"project\":\"learn_kylin\"}";
+//        output = KylinRESTfulMethod.query(body);
 //		//--------------------------------------------------------------------
 
         //------------------------------------------------------------
@@ -16,11 +17,11 @@ public class KylinRESTfulMethodMain {
 //		//--------------------------------------------------------------------
 //		output = KylinRESTfulMethod.listQueryableTables("my_kylin");
 //		//----------------list all cutes------------------------------
-//		output = KylinRESTfulMethod.listCubes(0,15,"my_kylin_cube", "my_kylin");
+        output = KylinRESTfulMethod.listCubes(0, 15, "sample_cube_1", "learn_kylin");
 //		//----------------------------------------------------------------
 //		output = KylinRESTfulMethod.getCube("my_kylin_cube");
 //		//----------------list my_kylin_cube information--------------
-//		output = KylinRESTfulMethod.getCubeDes("my_kylin_cube");
+//		output = KylinRESTfulMethod.getCubeDes("sample_cube_1");
 //		//----------------get data model-------------------------
 //		output = KylinRESTfulMethod.getDataModel("my_kylin_model");
 //		//------------------------------------------------------------
@@ -41,7 +42,7 @@ public class KylinRESTfulMethodMain {
         //		output = KylinRESTfulMethod.resumeJob(jobId);
 //		//--------------------------------------------------------------------	
 //		jobId="test";
-//		output = KylinRESTfulMethod.discardJob(jobId);
+//		output = KylinRESTfulMethod.discardJob(jobId);           
 //		//--------------------------------------------------------------------	
 //		jobId="test";
 //		output = KylinRESTfulMethod.getJobStatus(jobId);
@@ -62,6 +63,10 @@ public class KylinRESTfulMethodMain {
         //output  = KylinRESTfulMethod.wipeCache("METADATA", "my_kylin_cube", "drop");
 
         System.out.println(output);
+
+
+        KylinRESTfulMethod.timestampToString(1451606400000L);
+        KylinRESTfulMethod.timestampToString(1483228800000L);
 
     }
 }
