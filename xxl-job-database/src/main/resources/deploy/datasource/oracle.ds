@@ -3,9 +3,9 @@ driverClassName=oracle.jdbc.driver.OracleDriver
 #数据库连接地址
 url=jdbc:oracle:thin:@168.1.200.203:1521:ora11g
 #用户名
-username=tong
+username=root
 #密码
-password=tongtech
+password=root
  
 #连接池的最大数据库连接数。设为0表示无限制
 maxActive=30

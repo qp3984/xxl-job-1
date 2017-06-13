@@ -1,7 +1,7 @@
 #数据库驱动
 driverClassName=com.mysql.jdbc.Driver
 #数据库连接地址
-url=jdbc:mysql://localhost:3306/ticdc?useUnicode=true&characterEncoding=utf8&autoReconnect=false&auoReconnectForPools=false&yearIsDateType=false
+url=jdbc:mysql://localhost:3306/xxl_job?useUnicode=true&characterEncoding=utf8&autoReconnect=false&auoReconnectForPools=false&yearIsDateType=false
 #用户名
 username=root
 #密码
