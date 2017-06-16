@@ -57,7 +57,7 @@
 <#macro commonHeader>
 	<header class="main-header">
 		<a href="${request.contextPath}/" class="logo">
-			<span class="logo-mini"><b>X</b>XL</span>
+			<span class="logo-mini"><b>S</b>XP</span>
 			<span class="logo-lg"><b>任务调度</b>中心</span>
 		</a>
 		<nav class="navbar navbar-static-top" role="navigation">
@@ -86,7 +86,7 @@
 				<li class="nav-click <#if pageName == "jobinfo">active</#if>" ><a href="${request.contextPath}/jobinfo"><i class="fa fa-circle-o text-aqua"></i><span>任务管理</span></a></li>
 				<li class="nav-click <#if pageName == "joblog">active</#if>" ><a href="${request.contextPath}/joblog"><i class="fa fa-circle-o text-yellow"></i><span>调度日志</span></a></li>
                 <li class="nav-click <#if pageName == "jobgroup">active</#if>" ><a href="${request.contextPath}/jobgroup"><i class="fa fa-circle-o text-green"></i><span>执行器管理</span></a></li>
-				<li class="nav-click <#if pageName == "help">active</#if>" ><a href="${request.contextPath}/help"><i class="fa fa-circle-o text-gray"></i><span>使用教程</span></a></li>
+				<#--<li class="nav-click <#if pageName == "help">active</#if>" ><a href="${request.contextPath}/help"><i class="fa fa-circle-o text-gray"></i><span>使用教程</span></a></li>-->
 			</ul>
 		</section>
 		<!-- /.sidebar -->
@@ -170,14 +170,15 @@
 	<div class="control-sidebar-bg"></div>
 </#macro>
 
+<#--去掉下脚处的版权声明，为了显示的简洁性，add by dongpo.jia 2017-06-15 13:23:00-->
 <#macro commonFooter >
 	<footer class="main-footer">
-        Powered by <b>XXL-JOB</b> 1.7
-		<div class="pull-right hidden-xs">
-            <strong>Copyright &copy; 2015-${.now?string('yyyy')} &nbsp;
-                <a href="https://github.com/xuxueli/xxl-job" target="_blank" >github</a>&nbsp;
-                <a href="http://my.oschina.net/xuxueli/blog/690978" target="_blank" >oschina</a>
-            </strong><!-- All rights reserved. -->
-		</div>
+        <#--Powered by <b>XXL-JOB</b> 1.7-->
+		<#--<div class="pull-right hidden-xs">-->
+            <#--<strong>Copyright &copy; 2015-${.now?string('yyyy')} &nbsp;-->
+                <#--<a href="https://github.com/xuxueli/xxl-job" target="_blank" >github</a>&nbsp;-->
+                <#--<a href="http://my.oschina.net/xuxueli/blog/690978" target="_blank" >oschina</a>-->
+            <#--</strong><!-- All rights reserved. &ndash;&gt;-->
+		<#--</div>-->
 	</footer>
 </#macro>

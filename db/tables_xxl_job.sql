@@ -1,3 +1,10 @@
+CREATE DATABASE IF NOT EXISTS xxl_job default charset utf8 COLLATE utf8_general_ci;
+-- 任意主机以用户root和密码mypwd连接到mysql服务器
+-- 其中 第一个*表示数据库名；第二个*表示该数据库的表名；如果像上面那样 *.*的话表示所有到数据库下到所有表都允许访问；
+-- ‘%'：表示允许访问到mysql的ip地址；当然你也可以配置为具体到ip名称；%表示所有ip均可以访问；后面到‘xxxx'为root 用户的password；
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
+flush privileges;
+
 
 CREATE TABLE XXL_JOB_QRTZ_JOB_DETAILS
   (

@@ -6,9 +6,18 @@ import java.io.StringWriter;
 import java.util.Calendar;
 import java.util.Date;
 
-
+/**
+ * 工具方法
+ */
 public class KylinUtil {
     public static final String CR = System.getProperty("line.separator");
+
+    /**
+     * 打印当前堆栈信息
+     *
+     * @param e
+     * @return
+     */
     public static String getStackTracker(Throwable e) {
         return getClassicStackTrace(e);
     }
@@ -26,7 +35,15 @@ public class KylinUtil {
         return string;
     }
 
-
+    /**
+     * 返回前几天的，某个时间的时分秒，如2017-06-16 8:27:59秒
+     *
+     * @param beforeday 前几天
+     * @param hour
+     * @param minus
+     * @param second
+     * @return
+     */
     public static Date beforeDateTime(int beforeday, int hour, int minus, int second) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) - beforeday);

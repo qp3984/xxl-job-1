@@ -45,7 +45,7 @@ public class JettyServer {
 					server.join();	// block until thread stopped
 					logger.info(">>>>>>>>>>> xxl-rpc server join success, netcon={}, port={}", JettyServer.class.getName(), port);
 				} catch (Exception e) {
-					logger.error("", e);
+					logger.error("服务器异常", e);
 				} finally {
 					destroy();
 				}
