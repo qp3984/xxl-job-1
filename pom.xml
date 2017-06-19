@@ -17,6 +17,7 @@
         <!--<module>xxl-job-executor-springboot-example</module>-->
         <module>xxl-job-executor-kylin</module>
         <module>xxl-job-database</module>
+        <module>xxl-job-executor-sql</module>
     </modules>
 
     <build>
@@ -48,6 +49,11 @@
                 <configuration>
                     <skip>true</skip>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.2.21.v20170120</version>
             </plugin>
         </plugins>
     </build>
