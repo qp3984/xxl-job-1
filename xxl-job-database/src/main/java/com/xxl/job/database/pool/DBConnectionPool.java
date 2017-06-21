@@ -349,7 +349,7 @@ public class DBConnectionPool implements LifecycleAware {
         prop.put("com.xxl.job.database.deploy.path", "D:\\Workspaces\\GithubSpacesJiadongpo\\xxl-job\\xxl-job-database\\src\\main\\resources\\deploy");
         DBConnectionPool pool = new DBConnectionPool(prop);
         pool.start();
-        String dsName = "mysql";
+        String dsName = "mysql_101";
         System.out.println(DBConnectionPool.getDataSourceState(dsName));
         DBConnectionPool.getConnection(dsName);
         System.out.println(DBConnectionPool.getDataSources());
