@@ -2,15 +2,15 @@ $(function() {
 
 	// remove
 	$('.remove').on('click', function(){
-		var id = $(this).attr('id');
+		var connectionName = $(this).attr('connectionName');
 
 		layer.confirm('确认删除分组?', {icon: 3, title:'系统提示'}, function(index){
 			layer.close(index);
 
 			$.ajax({
 				type : 'POST',
-				url : base_url + '/jobgroup/remove',
-				data : {"id":id},
+				url : base_url + '/jobdatasource/remove',
+				data : {"connectionName":connectionName},
 				dataType : "json",
 				success : function(data){
 					if (data.code == 200) {
@@ -32,53 +32,79 @@ $(function() {
 				},
 			});
 		});
-
 	});
-
-	// jquery.validate 自定义校验 “英文字母开头，只含有英文字母、数字和下划线”
-	jQuery.validator.addMethod("myValid01", function(value, element) {
-		var length = value.length;
-		var valid = /^[a-z][a-zA-Z0-9-]*$/;
-		return this.optional(element) || valid.test(value);
-	}, "限制以小写字母开头，由小写字母、数字和下划线组成");
-
+	
 	$('.add').on('click', function(){
-		$('#addModal').modal({backdrop: false, keyboard: false}).modal('show');
+		$('#baseModal').modal({backdrop: false, keyboard: false}).modal('show');
+		$("#baseModal .form input[name='flag']").val("true");
+		$("#baseModal .form input[name='type'][value='mysql']").click();
 	});
-	var addModalValidate = $("#addModal .form").validate({
+	
+	$('.test').on('click',function(){
+		$.post(base_url + "/jobdatasource/test",  $("#baseModal .form").serialize(), function(data, status) {
+			if (data.code == "200") {
+				$("#msg").hide();
+				$("#errMsg").show();
+			} else {
+				$("#msg").show();
+				$("#errMsg").hide();
+			}
+		});
+	});
+	var modalValidate = $("#baseModal .form").validate({
 		errorElement : 'span',
 		errorClass : 'help-block',
 		focusInvalid : true,
 		rules : {
-			appName : {
+			username : {
 				required : true,
 				rangelength:[4,64],
-				myValid01 : true
 			},
-			title : {
+			password : {
 				required : true,
 				rangelength:[4, 12]
 			},
-			order : {
+			connectionName : {
 				required : true,
-				digits:true,
-				range:[1,1000]
+				rangelength:[4,64],
+			},
+			hostName : {
+				required : true,
+				rangelength:[4, 64]
+			},
+			code: {
+				required : true,
+				rangelength:[4, 12]
+			},
+			dbName: {
+				required : true,
+				rangelength:[4, 64]
 			}
 		},
 		messages : {
-			appName : {
-				required :"请输入“AppName”",
-				rangelength:"AppName长度限制为4~64",
-				myValid01: "限制以小写字母开头，由小写字母、数字和中划线组成"
+			username : {
+				required :"请输入“用户名”",
+				rangelength:"用户名长度限制为4~64",
 			},
-			title : {
-				required :"请输入“执行器名称”",
+			password : {
+				required :"请输入“密码”",
 				rangelength:"长度限制为4~12"
 			},
-			order : {
-				required :"请输入“排序”",
-				digits: "请输入整数",
-				range: "取值范围为1~1000"
+			connectionName : {
+				required :"请输入“用户名”",
+				rangelength:"用户名长度限制为4~64",
+			},
+			hostName : {
+				required :"请输入“密码”",
+				rangelength:"长度限制为4~64"
+			},
+			code : {
+				required :"请输入“用户名”",
+				rangelength:"用户名长度限制为4~64",
+			},
+			dbName : {
+				required :"请输入“密码”",
+				rangelength:"长度限制为4~64"
 			}
 		},
 		highlight : function(element) {
@@ -92,12 +118,19 @@ $(function() {
 			element.parent('div').append(error);
 		},
 		submitHandler : function(form) {
-			$.post(base_url + "/jobgroup/save",  $("#addModal .form").serialize(), function(data, status) {
+			var flag=$("#baseModal .form input[name='flag']").attr("flag");
+			var url=0;
+			if(flag){
+				url=base_url+"/jobdatasource/add";
+			}else{
+				url=base_url+"/jobdatasource/update"
+			}
+			$.post(url,  $("#baseModal .form").serialize(), function(data, status) {
 				if (data.code == "200") {
-					$('#addModal').modal('hide');
+					$('#baseModal').modal('hide');
 					layer.open({
 						title: '系统提示',
-						content: '新增成功',
+						content: (data.msg),
 						icon: '1',
 						end: function(layero, index){
 							window.location.reload();
@@ -106,122 +139,42 @@ $(function() {
 				} else {
 					layer.open({
 						title: '系统提示',
-						content: (data.msg || "新增失败"),
+						content: (data.msg),
 						icon: '2'
 					});
 				}
 			});
 		}
 	});
-	$("#addModal").on('hide.bs.modal', function () {
-		$("#addModal .form")[0].reset();
-		addModalValidate.resetForm();
-		$("#addModal .form .form-group").removeClass("has-error");
+	$("#baseModal").on('hide.bs.modal', function () {
+		$("#baseModal .form")[0].reset();
+		modalValidate.resetForm();
+		$("#baseModal .form .form-group").removeClass("has-error");
 	});
 
-	// 注册方式，切换
-	$("#addModal input[name=addressType], #updateModal input[name=addressType]").click(function(){
-		var addressType = $(this).val();
-		var $addressList = $(this).parents("form").find("input[name=addressList]");
-		if (addressType == 0) {
-			$addressList.val("");
-			$addressList.attr("readonly","readonly");
-		} else {
-			$addressList.removeAttr("readonly");
-		}
-	});
+    $("#misbut").on('click',function(){
+   	$("#msg").hide();
+   	$("#errMsg").hide();
+    });
 
 	// update
 	$('.update').on('click', function(){
-		$("#updateModal .form input[name='id']").val($(this).attr("id"));
-		$("#updateModal .form input[name='appName']").val($(this).attr("appName"));
-		$("#updateModal .form input[name='title']").val($(this).attr("title"));
-		$("#updateModal .form input[name='order']").val($(this).attr("order"));
+		$('#baseModal').modal({backdrop: false, keyboard: false}).modal('show');
+		$("#baseModal .form input[name='flag']").val("false");
+		$("#baseModal .form input[name='connectionName']").val($(this).attr("connectionName"));
+		$("#baseModal .form input[name='hostName']").val($(this).attr("hostName"));
+		$("#baseModal .form input[name='dbName']").val($(this).attr("dbName"));
+		$("#baseModal .form input[name='code']").val($(this).attr("code"));
+		$("#baseModal .form input[name='username']").val($(this).attr("username"));
+		$("#baseModal .form input[name='password']").val($(this).attr("password"));
 
 		// 注册方式
-		var addressType = $(this).attr("addressType");
-		$("#updateModal .form input[name='addressType']").removeAttr('checked');
+		var addressType = $(this).attr("type");
+		$("#baseModal .form input[name='type']").removeAttr('checked');
 		//$("#updateModal .form input[name='addressType'][value='"+ addressType +"']").attr('checked', 'true');
-		$("#updateModal .form input[name='addressType'][value='"+ addressType +"']").click();
-		// 机器地址
-		$("#updateModal .form input[name='addressList']").val($(this).attr("addressList"));
-
-		$('#updateModal').modal({backdrop: false, keyboard: false}).modal('show');
-	});
-	var updateModalValidate = $("#updateModal .form").validate({
-		errorElement : 'span',
-		errorClass : 'help-block',
-		focusInvalid : true,
-		rules : {
-			appName : {
-				required : true,
-				rangelength:[4,64],
-				myValid01 : true
-			},
-			title : {
-				required : true,
-				rangelength:[4, 12]
-			},
-			order : {
-				required : true,
-				digits:true,
-				range:[1,1000]
-			}
-		},
-		messages : {
-			appName : {
-				required :"请输入“AppName”",
-				rangelength:"AppName长度限制为4~64",
-				myValid01: "限制以小写字母开头，由小写字母、数字和中划线组成"
-			},
-			title : {
-				required :"请输入“执行器名称”",
-				rangelength:"长度限制为4~12"
-			},
-			order : {
-				required :"请输入“排序”",
-				digits: "请输入整数",
-				range: "取值范围为1~1000"
-			}
-		},
-		highlight : function(element) {
-			$(element).closest('.form-group').addClass('has-error');
-		},
-		success : function(label) {
-			label.closest('.form-group').removeClass('has-error');
-			label.remove();
-		},
-		errorPlacement : function(error, element) {
-			element.parent('div').append(error);
-		},
-		submitHandler : function(form) {
-			$.post(base_url + "/jobgroup/update",  $("#updateModal .form").serialize(), function(data, status) {
-				if (data.code == "200") {
-					$('#addModal').modal('hide');
-
-					layer.open({
-						title: '系统提示',
-						content: '更新成功',
-						icon: '1',
-						end: function(layero, index){
-							window.location.reload();
-						}
-					});
-				} else {
-					layer.open({
-						title: '系统提示',
-						content: (data.msg || "更新失败"),
-						icon: '2'
-					});
-				}
-			});
-		}
-	});
-	$("#updateModal").on('hide.bs.modal', function () {
-		$("#updateModal .form")[0].reset();
-		addModalValidate.resetForm();
-		$("#updateModal .form .form-group").removeClass("has-error");
-	});
-
+		$("#baseModal .form input[name='type'][value='"+ addressType +"']").click();
+	  });
+	  
+	
 	
 });
