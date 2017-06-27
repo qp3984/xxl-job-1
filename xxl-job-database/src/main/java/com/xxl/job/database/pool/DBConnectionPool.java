@@ -346,7 +346,9 @@ public class DBConnectionPool implements LifecycleAware {
 
     public static void main(String args[]) throws Exception {
         Properties prop = new Properties();
-        prop.put("com.xxl.job.database.deploy.path", "D:\\Workspaces\\GithubSpacesJiadongpo\\xxl-job\\xxl-job-database\\src\\main\\resources\\deploy");
+
+        prop.put("com.xxl.job.database.deploy.path", DBConnectionPool.class.getClassLoader().getResource("").getPath() + "./deploy");
+//        prop.put("com.xxl.job.database.deploy.path", "D:\\Workspaces\\GithubSpacesJiadongpo\\xxl-job\\xxl-job-database\\src\\main\\resources\\deploy");
         DBConnectionPool pool = new DBConnectionPool(prop);
         pool.start();
         String dsName = "mysql_101";

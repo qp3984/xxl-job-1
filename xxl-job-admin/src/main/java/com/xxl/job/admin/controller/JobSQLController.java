@@ -112,6 +112,35 @@ public class JobSQLController {
         return (ret > 0) ? ReturnT.SUCCESS : ReturnT.FAIL;
     }
 
+    @RequestMapping("/updateSub")
+    @ResponseBody
+    public ReturnT<String> updateSub(XxlJobGroup xxlJobGroup) {
+        // valid
+        if (xxlJobGroup.getAppName() == null || StringUtils.isBlank(xxlJobGroup.getAppName())) {
+            return new ReturnT<String>(500, "请输入AppName");
+        }
+        if (xxlJobGroup.getAppName().length() > 64) {
+            return new ReturnT<String>(500, "AppName长度限制为4~64");
+        }
+        if (xxlJobGroup.getTitle() == null || StringUtils.isBlank(xxlJobGroup.getTitle())) {
+            return new ReturnT<String>(500, "请输入名称");
+        }
+        if (xxlJobGroup.getAddressType() != 0) {
+            if (StringUtils.isBlank(xxlJobGroup.getAddressList())) {
+                return new ReturnT<String>(500, "手动录入注册方式，机器地址不可为空");
+            }
+            String[] addresss = xxlJobGroup.getAddressList().split(",");
+            for (String item : addresss) {
+                if (StringUtils.isBlank(item)) {
+                    return new ReturnT<String>(500, "机器地址非法");
+                }
+            }
+        }
+
+        int ret = xxlJobGroupDao.update(xxlJobGroup);
+        return (ret > 0) ? ReturnT.SUCCESS : ReturnT.FAIL;
+    }
+
     @RequestMapping("/remove")
     @ResponseBody
     public ReturnT<String> remove(int id) {
