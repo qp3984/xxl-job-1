@@ -37,7 +37,7 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">SQL列表</h3>&nbsp;&nbsp;
+                            <h3 class="box-title">SQL任务列表</h3>&nbsp;&nbsp;
                             <button class="btn btn-info btn-xs pull-left2 add">+新增</button>
                         <#--<button class="btn btn-info btn-xs pull-left2 save">+保存</button>-->
                         </div>
@@ -48,6 +48,7 @@
                                 <#--<th name="id" >ID</th>-->
                                     <th name="order">序号</th>
                                     <th name="appName">任务名称</th>
+                                    <th name="appName">数据源名称</th>
                                     <th name="operate">操作</th>
                                 </tr>
                                 </thead>
@@ -57,6 +58,7 @@
                                     <tr>
                                     <#--<td>${group.id}</td>-->
                                         <td>${group.order}</td>
+                                        <td>${group.appName}</td>
                                         <td>${group.appName}</td>
                                         <td>
                                             <button class="btn btn-warning btn-xs update" data-toggle="modal"
@@ -95,6 +97,7 @@
         <div class="modal-dialog ">
             <div class="modal-content">
                 <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h4 class="modal-title">新增执行器</h4>
                 </div>
                 <div class="modal-body">
@@ -103,6 +106,22 @@
                             <label for="lastname" class="col-sm-2 control-label">任务名称：<font color="red">*</font></label>
                             <div class="col-sm-10"><input type="text" class="form-control" name="order"
                                                           placeholder="请输入“排序”" maxlength="50"></div>
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="lastname" class="col-sm-2 control-label">选择数据源：<font
+                                    color="red">*</font></label>
+                            <div class="col-sm-10">
+                                <select class="form-control glueType" name="glueType">
+                                <#--<#list GlueTypeEnum as item>-->
+                                <#--<option value="${item}" >${item.desc}</option>-->
+                                    <option value="mysql_101">测试101Mysql数据源</option>
+                                    <option value="oracle23">生产报表oracle数据源</option>
+                                <#--</#list>-->
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="lastname" class="col-sm-2 control-label">发送邮件列表：<font
@@ -121,6 +140,8 @@
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-6">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">保存</button>
+                                <button type="button" id="misbut" class="btn btn-default" data-dismiss="modal">取消
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -134,6 +155,7 @@
         <div class="modal-dialog ">
             <div class="modal-content">
                 <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h4 class="modal-title">任务</h4>
                 </div>
                 <div class="modal-body">
@@ -142,6 +164,19 @@
                             <label for="lastname" class="col-sm-2 control-label">任务名称：<font color="red">*</font></label>
                             <div class="col-sm-10"><input type="text" class="form-control" name="order"
                                                           placeholder="请输入任务名称" maxlength="50"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname" class="col-sm-2 control-label">选择数据源：<font
+                                    color="red">*</font></label>
+                            <div class="col-sm-10">
+                                <select class="form-control glueType" name="glueType">
+                                <#--<#list GlueTypeEnum as item>-->
+                                <#--<option value="${item}" >${item.desc}</option>-->
+                                    <option value="mysql_101">测试101Mysql数据源</option>
+                                    <option value="oracle23">生产报表oracle数据源</option>
+                                <#--</#list>-->
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="lastname" class="col-sm-2 control-label">发送邮件列表：<font
@@ -203,8 +238,8 @@
                             <#--<button class="btn btn-info btn-xs pull-left2 add">+新增</button>-->
                             <#--<button class="btn btn-info btn-xs pull-left2 save">+保存</button>-->
                             <#--<button type="submit" class="btn btn-info btn-xs pull-left2 testsql">测试SQL</button>-->
-                                <button class="btn btn-default add">+新增</button>
-                                <button class="btn btn-default save">+保存</button>
+                                <button class="btn btn-default add">新增</button>
+                                <button class="btn btn-default save">保存</button>
                                 <button type="submit" class="btn btn-default testsql">测试SQL</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                 <input type="hidden" name="id">
@@ -227,6 +262,7 @@
                                     <#--<td>${group.id}</td>-->
                                         <td>${group.order}</td>
                                         <td>${group.appName}</td>
+
                                         <td>
                                             <button class="btn btn-warning btn-xs updateSub"
                                                     id="${group.id}"
@@ -237,8 +273,8 @@
                                                     addressList="${group.addressList}">编辑
                                             </button>
                                             <button class="btn btn-danger btn-xs remove" id="${group.id}">删除</button>
-                                            <button class="btn btn-warning btn-xs PgUp" id="${group.id}">上移</button>
-                                            <button class="btn btn-warning btn-xs PgDown" id="${group.id}">下移</button>
+                                            <button class="btn btn-warning btn-xs up" id="${group.id}">上移</button>
+                                            <button class="btn btn-warning btn-xs down" id="${group.id}">下移</button>
                                         </td>
                                     </tr>
                                     </#list>
@@ -272,6 +308,8 @@
 <script src="${request.contextPath}/static/adminlte/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <#-- jquery.validate -->
 <script src="${request.contextPath}/static/plugins/jquery/jquery.validate.min.js"></script>
+<#--<script src="${request.contextPath}/static/plugins/jquery/jquery-3.2.1.js"></script>-->
+<#--<script src="${request.contextPath}/static/plugins/jquery/commons.js"></script>-->
 <script src="${request.contextPath}/static/js/jobsql.index.1.js"></script>
 </body>
 </html>

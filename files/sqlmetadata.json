@@ -1,0 +1,24 @@
+{
+  "task_name": "完成数据分发",
+  "datasource_name": "mysql_101",
+  "recipient_lists ": [
+    "jiadp@cenrise.com",
+    "zahngwe@qq.com",
+    "qiyi@qq.com"
+  ],
+  "cc_lists": [
+    "jiadp@cenrise.com",
+    "zahngwe@qq.com",
+    "qiyi@qq.com"
+  ],
+  "subtasks": [
+    {
+      "subtask_name": "查询信息表",
+      "sql": "select * from dual;"
+    },
+    {
+      "subtask_name": "查询信息表",
+      "sql": "select * from dual;"
+    }
+  ]
+}
