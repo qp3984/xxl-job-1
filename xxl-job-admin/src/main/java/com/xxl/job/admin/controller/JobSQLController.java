@@ -2,10 +2,13 @@ package com.xxl.job.admin.controller;
 
 import com.xxl.job.admin.core.model.XxlJobGroup;
 import com.xxl.job.admin.core.model.XxlJobSQL;
+import com.xxl.job.admin.core.thread.JobRegistryMonitorHelper;
 import com.xxl.job.admin.dao.IXxlJobGroupDao;
 import com.xxl.job.admin.dao.IXxlJobInfoDao;
 import com.xxl.job.admin.dao.IXxlJobSQLDao;
 import com.xxl.job.core.biz.model.ReturnT;
+import com.xxl.job.core.enums.RegistryConfig;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,11 +34,8 @@ public class JobSQLController {
     public IXxlJobInfoDao xxlJobInfoDao;
     @Resource
     public IXxlJobGroupDao xxlJobGroupDao;
-
     @Resource
     public IXxlJobSQLDao xxlJobSQLDao;
-
-
     @RequestMapping
     public String index(Model model) {
 
@@ -151,6 +156,38 @@ public class JobSQLController {
 
         int ret = xxlJobGroupDao.remove(id);
         return (ret > 0) ? ReturnT.SUCCESS : ReturnT.FAIL;
+    }
+    @RequestMapping("/testsql")
+    @ResponseBody
+    public ReturnT<String> testSql(XxlJobSql jobSql) {
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@172.16.136.253:1521:otestdb";
+            String user = "query";// 用户名,系统默认的账户名
+            String password = "query_on";// 你安装时选设置的密码
+            Connection con = DriverManager.getConnection(url, user, password);// 获取连接
+            PreparedStatement pre = con.prepareStatement(jobSql.getSql());// 实例化预编译语句
+            String[] sqls = jobSql.getSql().split(" ");
+            if(sqls[0].equals("select")){
+                ResultSet rs = pre.executeQuery();// 执行查询
+                if(rs.next()){
+                    return ReturnT.SUCCESS;
+                }else{
+                    return ReturnT.FAIL;
+                }
+            }else{
+                int rs = pre.executeUpdate();
+                if(rs!=-1){
+                    return ReturnT.SUCCESS;
+                }else{
+                    return ReturnT.FAIL;
+                }
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return ReturnT.FAIL;
+        }
     }
 
 }

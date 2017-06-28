@@ -309,7 +309,23 @@ $(function () {
             });
         }
     });
-
+    $('.testsql').on('click', function () {
+    	  $.post(base_url + "/jobsql/testsql", $("#updateSubModal .form").serialize(), function (data, status) {
+    		  if (data.code == "200") {
+  				$("#eerMsg").hide();
+  				$("#rigMsg").show();
+  			} else {
+  				$("#errMsg").show();
+  				$("#rigMsg").hide();
+  			}
+          });
+    });
+    
+    $("#rebut").on('click',function(){
+       	$("#msg").hide();
+       	$("#errMsg").hide();
+        });
+    
     $("#updateSubModal").on('hide.bs.modal', function () {
         $("#updateSubModal .form")[0].reset();
         addModalValidate.resetForm();
