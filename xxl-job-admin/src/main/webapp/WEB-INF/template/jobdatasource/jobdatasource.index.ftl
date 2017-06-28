@@ -81,6 +81,7 @@
                 </div>
                 <div class="modal-body">
                     <form class="form-horizontal form" role="form" >
+                 <input type="hidden" name="oldName" value="" />
                         <div class="form-group">
                             <label for="lastname" class="col-sm-3 control-label">连接名称<font color="red">*</font></label>
                             <div class="col-sm-9"><input type="text" class="form-control" name="connectionName" placeholder="请输入“连接名称”" maxlength="64" ></div>
@@ -114,7 +115,7 @@
                             <div class="col-sm-9"><input type="text" class="form-control" name="password" placeholder="密码" maxlength="12" ></div>
                         </div>
                         <hr>
-                         <a class="btn btn-info btn-xs col-sm-2 test" >测试链接</a> <div class="col-sm-9" id="msg" style="display: none;"><font  color="red">连接失败!</font></div><div class="col-sm-9" id="errMsg" style="display: none;"><font  color="green">连接成功!</font></div>
+                         <a class="btn btn-info btn-xs col-sm-2 test" >测试链接</a> <div class="col-sm-9" id="errMsg" style="display: none;"><font  color="red">连接失败!</font></div><div class="col-sm-9" id="rigMsg" style="display: none;"><font  color="green">连接成功!</font></div>
                         <div class="form-group">
                             <div class="col-sm-offset-5 col-sm-6">
                                 <button type="submit" class="btn btn-primary"  >保存</button>

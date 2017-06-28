@@ -34,6 +34,12 @@ $(function() {
 		});
 	});
 	
+	jQuery.validator.addMethod("myValid01", function(value, element) {
+		var length = value.length;
+		var valid = /^[\w\.]+$/;
+		return this.optional(element) || valid.test(value);
+	}, "由字母、数字和下划线组成");
+	
 	$('.add').on('click', function(){
 		$('#baseModal').modal({backdrop: false, keyboard: false}).modal('show');
 		$("#baseModal .form input[name='flag']").val("true");
@@ -43,11 +49,11 @@ $(function() {
 	$('.test').on('click',function(){
 		$.post(base_url + "/jobdatasource/test",  $("#baseModal .form").serialize(), function(data, status) {
 			if (data.code == "200") {
-				$("#msg").hide();
-				$("#errMsg").show();
-			} else {
-				$("#msg").show();
 				$("#errMsg").hide();
+				$("#rigMsg").show();
+			} else {
+				$("#rigMsg").hide();
+				$("#errMsg").show();
 			}
 		});
 	});
@@ -58,15 +64,16 @@ $(function() {
 		rules : {
 			username : {
 				required : true,
-				rangelength:[4,64],
+				rangelength:[4,64]
 			},
 			password : {
 				required : true,
-				rangelength:[4, 12]
+				rangelength:[4, 12],
 			},
 			connectionName : {
 				required : true,
 				rangelength:[4,64],
+				myValid01 : true
 			},
 			hostName : {
 				required : true,
@@ -84,26 +91,27 @@ $(function() {
 		messages : {
 			username : {
 				required :"请输入“用户名”",
-				rangelength:"用户名长度限制为4~64",
+				rangelength:"用户名长度限制为4~64"
 			},
 			password : {
 				required :"请输入“密码”",
 				rangelength:"长度限制为4~12"
 			},
 			connectionName : {
-				required :"请输入“用户名”",
+				required :"请输入“连接名称”",
 				rangelength:"用户名长度限制为4~64",
+				myValid01: "由字母、数字和下划线组成"
 			},
 			hostName : {
-				required :"请输入“密码”",
+				required :"请输入“主机名或IP”",
 				rangelength:"长度限制为4~64"
 			},
 			code : {
-				required :"请输入“用户名”",
-				rangelength:"用户名长度限制为4~64",
+				required :"请输入“端口号”",
+				rangelength:"用户名长度限制为4~64"
 			},
 			dbName : {
-				required :"请输入“密码”",
+				required :"请输入“数据库名”",
 				rangelength:"长度限制为4~64"
 			}
 		},
@@ -123,6 +131,7 @@ $(function() {
 			if(flag){
 				url=base_url+"/jobdatasource/add";
 			}else{
+				
 				url=base_url+"/jobdatasource/update"
 			}
 			$.post(url,  $("#baseModal .form").serialize(), function(data, status) {
@@ -153,14 +162,15 @@ $(function() {
 	});
 
     $("#misbut").on('click',function(){
-   	$("#msg").hide();
    	$("#errMsg").hide();
+   	$("#rigMsg").hide();
     });
 
 	// update
 	$('.update').on('click', function(){
 		$('#baseModal').modal({backdrop: false, keyboard: false}).modal('show');
 		$("#baseModal .form input[name='flag']").val("false");
+		$("#baseModal .form input[name='oldName']").val($(this).attr("connectionName"));
 		$("#baseModal .form input[name='connectionName']").val($(this).attr("connectionName"));
 		$("#baseModal .form input[name='hostName']").val($(this).attr("hostName"));
 		$("#baseModal .form input[name='dbName']").val($(this).attr("dbName"));
