@@ -55,11 +55,11 @@
                                 <tbody>
                                 <#if list?exists && list?size gt 0>
                                     <#list list as group>
+                                        <#assign sqllist="${group.sqllist}"?eval />
                                     <tr>
-                                    <#--<td>${group.id}</td>-->
-                                        <td>${group.order}</td>
-                                        <td>${group.appName}</td>
-                                        <td>${group.appName}</td>
+                                        <td>${group.id}</td>
+                                        <td>${sqllist.task_name}</td>
+                                        <td>${sqllist.datasource_name}</td>
                                         <td>
                                             <button class="btn btn-warning btn-xs update" data-toggle="modal"
                                                     id="${group.id}"
@@ -106,7 +106,6 @@
                             <label for="lastname" class="col-sm-2 control-label">任务名称：<font color="red">*</font></label>
                             <div class="col-sm-10"><input type="text" class="form-control" name="order"
                                                           placeholder="请输入“排序”" maxlength="50"></div>
-
                         </div>
 
 
@@ -241,17 +240,14 @@
                                 <button class="btn btn-default add">+新增</button>
                                 <button class="btn btn-default save">+保存</button>
                                 <a type="submit" class="btn btn-default testsql">测试SQL</a>
-                                <div class="col-sm-9" id="errMsg" style="display: none;"><font  color="red">测试失败!</font></div><div class="col-sm-9" id="rigMsg" style="display: none;"><font  color="green">测试成功!</font></div>
-
-                                <button class="btn btn-default add">新增</button>
-                                <button class="btn btn-default save">保存</button>
-                                <button type="submit" class="btn btn-default testsql">测试SQL</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-
+                                <div class="col-sm-9" id="errMsg" style="display: none;"><font color="red">测试失败!</font>
+                                </div>
+                                <div class="col-sm-9" id="rigMsg" style="display: none;"><font
+                                        color="green">测试成功!</font></div>
                                 <input type="hidden" name="id">
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <table id="joblog_list" class="table table-bordered table-striped display" width="100%">
                                 <thead>
@@ -291,14 +287,14 @@
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="rebut" class="btn btn-default" data-dismiss="modal" >关闭
+                    <button type="button" id="rebut" class="btn btn-default" data-dismiss="modal">关闭
                     </button>
 
                 </div>
             <#--<hr>-->
 
             </div>
-             </form>
+            </form>
         </div>
 
     </div>

@@ -1,20 +1,54 @@
 package com.xxl.job.admin.core.model;
 
-public class XxlJobSql {
-  private String order;
-  private String sql;
+import java.util.ArrayList;
+import java.util.List;
 
-public String getOrder() {
-	return order;
-}
-public void setOrder(String order) {
-	this.order = order;
-}
+public class XxlJobSQL {
 
-public String getSql() {
-	return sql;
-}
-public void setSql(String sql) {
-	this.sql = sql;
-}
+    private int id;
+    private String taskName;
+    private String dataSource;
+    private String sqlList;
+    private List<XxlJobSubSQL> xxlJobSubSQLs = new ArrayList<XxlJobSubSQL>();
+
+    public int getId() {
+        return id;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public String getDataSource() {
+        return dataSource;
+    }
+
+    public void setSqlList(String sqlList) {
+        this.sqlList = sqlList;
+    }
+
+    public String getSqlList() {
+
+        return sqlList;
+    }
+
+    public List<XxlJobSubSQL> getXxlJobSubSQLs() {
+        return xxlJobSubSQLs;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public void setDataSource(String dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public void setXxlJobSubSQLs(List<XxlJobSubSQL> xxlJobSubSQLs) {
+        this.xxlJobSubSQLs = xxlJobSubSQLs;
+    }
 }

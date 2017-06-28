@@ -5,7 +5,7 @@
 	
 	<resultMap id="XxlJobSQL" type="com.xxl.job.admin.core.model.XxlJobSQL" >
 		<result column="id" property="id" />
-	    <result column="sqllist" property="sqllist" />
+	    <result column="sqllist" property="sqlList" />
 	</resultMap>
 
 	<sql id="Base_Column_List">

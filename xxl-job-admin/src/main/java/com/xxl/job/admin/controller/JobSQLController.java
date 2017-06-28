@@ -2,6 +2,7 @@ package com.xxl.job.admin.controller;
 
 import com.xxl.job.admin.core.model.XxlJobGroup;
 import com.xxl.job.admin.core.model.XxlJobSQL;
+import com.xxl.job.admin.core.model.XxlJobSubSQL;
 import com.xxl.job.admin.core.thread.JobRegistryMonitorHelper;
 import com.xxl.job.admin.dao.IXxlJobGroupDao;
 import com.xxl.job.admin.dao.IXxlJobInfoDao;
@@ -159,15 +160,15 @@ public class JobSQLController {
     }
     @RequestMapping("/testsql")
     @ResponseBody
-    public ReturnT<String> testSql(XxlJobSql jobSql) {
+    public ReturnT<String> testSql(XxlJobSubSQL jobSubSql) {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
             String url = "jdbc:oracle:thin:@172.16.136.253:1521:otestdb";
             String user = "query";// 用户名,系统默认的账户名
             String password = "query_on";// 你安装时选设置的密码
             Connection con = DriverManager.getConnection(url, user, password);// 获取连接
-            PreparedStatement pre = con.prepareStatement(jobSql.getSql());// 实例化预编译语句
-            String[] sqls = jobSql.getSql().split(" ");
+            PreparedStatement pre = con.prepareStatement(jobSubSql.getSql());// 实例化预编译语句
+            String[] sqls = jobSubSql.getSql().split(" ");
             if(sqls[0].equals("select")){
                 ResultSet rs = pre.executeQuery();// 执行查询
                 if(rs.next()){
