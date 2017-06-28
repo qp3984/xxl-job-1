@@ -332,15 +332,27 @@ $(function () {
         $("#updateSubModal .form .form-group").removeClass("has-error");
     });
 
-    $('.PgUp').on('click', function () {
-        // var id = $(this).attr('id');
-        alert("上移");
 
+    //上移
+    var $up = $(".up");
+    $up.click(function () {
+        var $tr = $(this).parents("tr");
+        if ($tr.index() != 0) {
+            $tr.fadeOut().fadeIn();
+            $tr.prev().before($tr);
+        }
+    });
+    //下移
+    var $down = $(".down");
+    var len = $down.length;
+    $down.click(function () {
+        var $tr = $(this).parents("tr");
+        if ($tr.index() != len - 1) {
+            $tr.fadeOut().fadeIn();
+            $tr.next().after($tr);
+        }
     });
 
-    $('.PgDown').on('click', function () {
-        // var id = $(this).attr('id');
-        alert("下移");
-    });
+   
 
 });

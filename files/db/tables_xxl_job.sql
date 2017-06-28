@@ -225,3 +225,11 @@ INSERT INTO `XXL_JOB_QRTZ_TRIGGER_GROUP` ( `app_name`, `title`, `order`, `addres
 
 commit;
 
+
+
+--  SQL执行器
+CREATE TABLE xxl_job.xxl_job_vbill_sql_task_list
+(
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    sqllist TEXT
+);

@@ -152,8 +152,12 @@
 			<artifactId>xxl-job-core</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
-		
 
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.33</version>
+		</dependency>
 	</dependencies>
 	<!--<build>-->
 		<!--<finalName>${project.artifactId}</finalName>-->
