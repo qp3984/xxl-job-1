@@ -1,6 +1,8 @@
 package com.xxl.job.admin.dao.impl;
 
+import com.xxl.job.admin.core.model.XxlJobGroup;
 import com.xxl.job.admin.core.model.XxlJobInfo;
+import com.xxl.job.admin.core.model.XxlJobSQL;
 import com.xxl.job.admin.dao.IXxlJobSQLDao;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -18,6 +20,10 @@ public class XxlJobSQLDaoImpl implements IXxlJobSQLDao {
     @Resource
     public SqlSessionTemplate sqlSessionTemplate;
 
+    @Override
+    public List<XxlJobSQL> findAll() {
+        return sqlSessionTemplate.selectList("XxlJobSQLMapper.findAll");
+    }
     @Override
     public List<XxlJobInfo> pageList(int offset, int pagesize, int jobGroup, String executorHandler) {
         HashMap<String, Object> params = new HashMap<String, Object>();

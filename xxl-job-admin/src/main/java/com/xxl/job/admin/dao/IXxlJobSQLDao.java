@@ -1,14 +1,15 @@
 package com.xxl.job.admin.dao;
 
 import com.xxl.job.admin.core.model.XxlJobInfo;
+import com.xxl.job.admin.core.model.XxlJobSQL;
 
 import java.util.List;
 
 
-/**
- * SQL
- */
+
 public interface IXxlJobSQLDao {
+
+    public List<XxlJobSQL> findAll();
 
     public List<XxlJobInfo> pageList(int offset, int pagesize, int jobGroup, String executorHandler);
 
