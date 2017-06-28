@@ -1,0 +1,9 @@
+driverClassName=oracle.jdbc.driver.OracleDriver
+url=jdbc:oracle:thin:@168.1.200.203:1521:ora11g
+username=root
+password=root
+maxActive=30
+maxIdle=10
+maxWait=1000
+removeAbandoned=true
+removeAbandonedTimeout=180

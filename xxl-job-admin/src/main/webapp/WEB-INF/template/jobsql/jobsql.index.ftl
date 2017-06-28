@@ -178,7 +178,6 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h4 class="modal-title">子任务</h4>
                 </div>
 
@@ -194,7 +193,7 @@
                         <div class="form-group">
                             <label for="lastname" class="col-sm-2 control-label">SQL脚本：<font
                                     color="red">*</font></label>
-                            <div class="col-sm-8"><textarea class="form-control" rows="3"
+                            <div class="col-sm-8"><textarea class="form-control" rows="3" name="sql"
                                                             placeholder="请输入SQL脚本"></textarea></div>
                         </div>
                         <div class="form-group">
@@ -205,11 +204,12 @@
                             <#--<button type="submit" class="btn btn-info btn-xs pull-left2 testsql">测试SQL</button>-->
                                 <button class="btn btn-default add">+新增</button>
                                 <button class="btn btn-default save">+保存</button>
-                                <button type="submit" class="btn btn-default testsql">测试SQL</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                <a type="submit" class="btn btn-default testsql">测试SQL</a>
+                                <div class="col-sm-9" id="errMsg" style="display: none;"><font  color="red">测试失败!</font></div><div class="col-sm-9" id="rigMsg" style="display: none;"><font  color="green">测试成功!</font></div>
                                 <input type="hidden" name="id">
                             </div>
                         </div>
+                        
                         <div class="form-group">
                             <table id="joblog_list" class="table table-bordered table-striped display" width="100%">
                                 <thead>
@@ -246,17 +246,16 @@
                                 </tbody>
                             </table>
                         </div>
-                    </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    <button type="button" id="rebut" class="btn btn-default" data-dismiss="modal" >关闭
                     </button>
 
                 </div>
             <#--<hr>-->
 
-
             </div>
+             </form>
         </div>
 
     </div>
