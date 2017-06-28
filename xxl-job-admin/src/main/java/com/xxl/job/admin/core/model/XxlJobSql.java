@@ -9,6 +9,7 @@ public class XxlJobSQL {
 	private String taskName;
 	private String dataSource;
 	private String sqlList;
+	
 	private List<XxlJobSubSQL> xxlJobSubSQLs = new ArrayList<XxlJobSubSQL>();
 
 	public int getId() {

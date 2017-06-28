@@ -55,7 +55,7 @@
                                 <tbody>
                                 <#if list?exists && list?size gt 0>
                                     <#list list as group>
-                                        <#assign sqllist="${group.sqllist}"?eval />
+                                        <#assign sqllist="${group.sqlList}"?eval />
                                     <tr>
                                         <td>${group.id}</td>
                                         <td>${sqllist.task_name}</td>
