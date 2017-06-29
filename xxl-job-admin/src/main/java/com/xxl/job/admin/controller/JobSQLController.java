@@ -1,21 +1,11 @@
 package com.xxl.job.admin.controller;
 
 
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.xxl.job.admin.core.model.XxlJobSQL;
-import com.xxl.job.admin.core.model.XxlJobSubSQL;
-import com.xxl.job.admin.core.thread.JobRegistryMonitorHelper;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.xxl.job.admin.core.model.XxlJobGroup;
 import com.xxl.job.admin.core.model.XxlJobSQL;
 import com.xxl.job.admin.core.model.XxlJobSubSQL;
-import com.xxl.job.admin.dao.IXxlJobGroupDao;
-
 import com.xxl.job.admin.dao.IXxlJobInfoDao;
 import com.xxl.job.admin.dao.IXxlJobSQLDao;
 import com.xxl.job.core.biz.model.ReturnT;
@@ -26,15 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import java.util.List;
 
 /**
@@ -48,28 +35,21 @@ public class JobSQLController {
     public IXxlJobInfoDao xxlJobInfoDao;
     @Resource
     public IXxlJobSQLDao xxlJobSQLDao;
+
     @RequestMapping
     public String index(Model model) {
 
-    	  List<XxlJobSQL> list = xxlJobSQLDao.findAll();
-    	  
-//        if (CollectionUtils.isNotEmpty(list)) {
-//            for (XxlJobSQL sqllist : list) {
-//
-//            }
-//        }
-    	  File file = new File(datasourceDeploy.substring(1, datasourceDeploy.length()));
-    	  System.out.println("数据源路径：" + datasourceDeploy.substring(1, datasourceDeploy.length()));
-    	  File[] listFiles = file.listFiles();
-    	  List<String>echoList=new ArrayList<>();
-    	  for(File dataName:listFiles){
-    		  echoList.add(dataName.getName());
-    	  }
-    	  model.addAttribute("echoList", echoList);
-    	  model.addAttribute("list", list);
-	
-
         List<XxlJobSQL> list = xxlJobSQLDao.findAll();
+
+        File file = new File(datasourceDeploy.substring(1, datasourceDeploy.length()));
+//        System.out.println("数据源路径：" + datasourceDeploy.substring(1, datasourceDeploy.length()));
+        File[] listFiles = file.listFiles();
+        List<String> echoList = new ArrayList<>();
+        for (File dataName : listFiles) {
+            echoList.add(dataName.getName());
+        }
+        model.addAttribute("echoList", echoList);
+
         model.addAttribute("list", list);
         return "jobsql/jobsql.index";
     }
@@ -79,7 +59,7 @@ public class JobSQLController {
     public ReturnT<String> subTaskList(XxlJobSQL xxlJobSQL) {
         int id = xxlJobSQL.getId();
         String subTasks = xxlJobSQLDao.querySubTasks(id);
-        JSONObject jsonObject=JSON.parseObject(subTasks);//json字符串转换成jsonobject对象
+        JSONObject jsonObject = JSON.parseObject(subTasks);//json字符串转换成jsonobject对象
         JSONArray jsonArray = jsonObject.getJSONArray("subtasks");
         String jsonStr = jsonArray.toJSONString();//JSONArray转化json字符串
         return new ReturnT<String>(jsonStr);
@@ -95,42 +75,43 @@ public class JobSQLController {
             return new ReturnT<String>(500, "请输入任务名称");
         }
         if (xxlJobSQL.getDatasource_name() == null || StringUtils.isBlank(xxlJobSQL.getTask_name())) {
-        	return new ReturnT<String>(500, "请输入数据源");
+            return new ReturnT<String>(500, "请输入数据源");
         }
         if (xxlJobSQL.getCc_lists() == null || StringUtils.isBlank(xxlJobSQL.getTask_name())) {
-        	return new ReturnT<String>(500, "请输入发件人");
+            return new ReturnT<String>(500, "请输入发件人");
         }
         if (xxlJobSQL.getRecipient_lists() == null || StringUtils.isBlank(xxlJobSQL.getTask_name())) {
-        	return new ReturnT<String>(500, "请输入收件人");
+            return new ReturnT<String>(500, "请输入收件人");
         }
-        
+
         String sqlList = JSON.toJSONString(xxlJobSQL);
         int ret = xxlJobSQLDao.save(sqlList);
         return (ret > 0) ? ReturnT.SUCCESS : ReturnT.FAIL;
     }
+
     @RequestMapping("/update")
     @ResponseBody
-    public ReturnT<String> update(XxlJobSQL xxlJobSQL,int id) {
-    	
-    	// valid
-    	if (xxlJobSQL.getTask_name() == null || StringUtils.isBlank(xxlJobSQL.getTask_name())) {
-    		return new ReturnT<String>(500, "请输入任务名称");
-    	}
-    	if (xxlJobSQL.getDatasource_name() == null || StringUtils.isBlank(xxlJobSQL.getTask_name())) {
-    		return new ReturnT<String>(500, "请输入数据源");
-    	}
-    	if (xxlJobSQL.getCc_lists() == null || StringUtils.isBlank(xxlJobSQL.getTask_name())) {
-    		return new ReturnT<String>(500, "请输入发件人");
-    	}
-    	if (xxlJobSQL.getRecipient_lists() == null || StringUtils.isBlank(xxlJobSQL.getTask_name())) {
-    		return new ReturnT<String>(500, "请输入收件人");
-    	}
-    	
-    	String sqlList = JSON.toJSONString(xxlJobSQL);
-    	xxlJobSQL.setSqlList(sqlList);
-    	xxlJobSQL.setId(id);
-    	int ret = xxlJobSQLDao.update(xxlJobSQL);
-    	return (ret > 0) ? ReturnT.SUCCESS : ReturnT.FAIL;
+    public ReturnT<String> update(XxlJobSQL xxlJobSQL, int id) {
+
+        // valid
+        if (xxlJobSQL.getTask_name() == null || StringUtils.isBlank(xxlJobSQL.getTask_name())) {
+            return new ReturnT<String>(500, "请输入任务名称");
+        }
+        if (xxlJobSQL.getDatasource_name() == null || StringUtils.isBlank(xxlJobSQL.getTask_name())) {
+            return new ReturnT<String>(500, "请输入数据源");
+        }
+        if (xxlJobSQL.getCc_lists() == null || StringUtils.isBlank(xxlJobSQL.getTask_name())) {
+            return new ReturnT<String>(500, "请输入发件人");
+        }
+        if (xxlJobSQL.getRecipient_lists() == null || StringUtils.isBlank(xxlJobSQL.getTask_name())) {
+            return new ReturnT<String>(500, "请输入收件人");
+        }
+
+        String sqlList = JSON.toJSONString(xxlJobSQL);
+        xxlJobSQL.setSqlList(sqlList);
+        xxlJobSQL.setId(id);
+        int ret = xxlJobSQLDao.update(xxlJobSQL);
+        return (ret > 0) ? ReturnT.SUCCESS : ReturnT.FAIL;
     }
 
    /* 
@@ -182,6 +163,7 @@ public class JobSQLController {
         int ret = xxlJobSQLDao.remove(id);
         return (ret > 0) ? ReturnT.SUCCESS : ReturnT.FAIL;
     }
+
     @RequestMapping("/testsql")
     @ResponseBody
     public ReturnT<String> testSql(XxlJobSubSQL jobSubSql) {
@@ -193,18 +175,18 @@ public class JobSQLController {
             Connection con = DriverManager.getConnection(url, user, password);// 获取连接
             PreparedStatement pre = con.prepareStatement(jobSubSql.getSql());// 实例化预编译语句
             String[] sqls = jobSubSql.getSql().split(" ");
-            if(sqls[0].equals("select")){
+            if (sqls[0].equals("select")) {
                 ResultSet rs = pre.executeQuery();// 执行查询
-                if(rs.next()){
+                if (rs.next()) {
                     return ReturnT.SUCCESS;
-                }else{
+                } else {
                     return ReturnT.FAIL;
                 }
-            }else{
+            } else {
                 int rs = pre.executeUpdate();
-                if(rs!=-1){
+                if (rs != -1) {
                     return ReturnT.SUCCESS;
-                }else{
+                } else {
                     return ReturnT.FAIL;
                 }
             }
@@ -214,7 +196,6 @@ public class JobSQLController {
             return ReturnT.FAIL;
         }
     }
-    
-    
+
 
 }
