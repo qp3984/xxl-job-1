@@ -15,17 +15,18 @@ public interface IXxlJobSQLDao {
 
     public int pageListCount(int offset, int pagesize, int jobGroup, String executorHandler);
 
-    public int save(XxlJobInfo info);
+    public int save(String sqlList);
 
     public XxlJobInfo loadById(int id);
 
-    public int update(XxlJobInfo item);
+    public int update(XxlJobSQL xxlJobSQL);
 
-    public int delete(int id);
+    public int remove(int id);
 
     public List<XxlJobInfo> getJobsByGroup(String jobGroup);
 
     public int findAllCount();
+
 
     /**
      * 任务id
@@ -33,5 +34,6 @@ public interface IXxlJobSQLDao {
      * @return
      */
     public String querySubTasks(int id);
+
 
 }

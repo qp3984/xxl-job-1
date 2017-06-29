@@ -73,9 +73,9 @@ public class AdminApiUtil {
 
 			// timeout
 			RequestConfig requestConfig = RequestConfig.custom()
-					.setConnectionRequestTimeout(10000)
-					.setSocketTimeout(10000)
-					.setConnectTimeout(10000)
+					.setConnectionRequestTimeout(28800)
+					.setSocketTimeout(28800)
+					.setConnectTimeout(28800)
 					.build();
 
 			httpPost.setConfig(requestConfig);

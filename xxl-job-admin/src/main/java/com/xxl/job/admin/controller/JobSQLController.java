@@ -1,5 +1,13 @@
 package com.xxl.job.admin.controller;
 
+
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.xxl.job.admin.core.model.XxlJobSQL;
+import com.xxl.job.admin.core.model.XxlJobSubSQL;
+import com.xxl.job.admin.core.thread.JobRegistryMonitorHelper;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -7,6 +15,7 @@ import com.xxl.job.admin.core.model.XxlJobGroup;
 import com.xxl.job.admin.core.model.XxlJobSQL;
 import com.xxl.job.admin.core.model.XxlJobSubSQL;
 import com.xxl.job.admin.dao.IXxlJobGroupDao;
+
 import com.xxl.job.admin.dao.IXxlJobInfoDao;
 import com.xxl.job.admin.dao.IXxlJobSQLDao;
 import com.xxl.job.core.biz.model.ReturnT;
@@ -17,10 +26,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import java.util.List;
 
 /**
@@ -29,15 +43,31 @@ import java.util.List;
 @Controller
 @RequestMapping("/jobsql")
 public class JobSQLController {
-
+    public static final String datasourceDeploy = JobDataSourceController.class.getClassLoader().getResource("").getPath() + "deploy/datasource";
     @Resource
     public IXxlJobInfoDao xxlJobInfoDao;
-    @Resource
-    public IXxlJobGroupDao xxlJobGroupDao;
     @Resource
     public IXxlJobSQLDao xxlJobSQLDao;
     @RequestMapping
     public String index(Model model) {
+
+    	  List<XxlJobSQL> list = xxlJobSQLDao.findAll();
+    	  
+//        if (CollectionUtils.isNotEmpty(list)) {
+//            for (XxlJobSQL sqllist : list) {
+//
+//            }
+//        }
+    	  File file = new File(datasourceDeploy.substring(1, datasourceDeploy.length()));
+    	  System.out.println("数据源路径：" + datasourceDeploy.substring(1, datasourceDeploy.length()));
+    	  File[] listFiles = file.listFiles();
+    	  List<String>echoList=new ArrayList<>();
+    	  for(File dataName:listFiles){
+    		  echoList.add(dataName.getName());
+    	  }
+    	  model.addAttribute("echoList", echoList);
+    	  model.addAttribute("list", list);
+	
 
         List<XxlJobSQL> list = xxlJobSQLDao.findAll();
         model.addAttribute("list", list);
@@ -58,81 +88,71 @@ public class JobSQLController {
 
     @RequestMapping("/save")
     @ResponseBody
-    public ReturnT<String> save(XxlJobGroup xxlJobGroup) {
+    public ReturnT<String> save(XxlJobSQL xxlJobSQL) {
 
         // valid
-        if (xxlJobGroup.getAppName() == null || StringUtils.isBlank(xxlJobGroup.getAppName())) {
-            return new ReturnT<String>(500, "请输入AppName");
+        if (xxlJobSQL.getTask_name() == null || StringUtils.isBlank(xxlJobSQL.getTask_name())) {
+            return new ReturnT<String>(500, "请输入任务名称");
         }
-        if (xxlJobGroup.getAppName().length() > 64) {
-            return new ReturnT<String>(500, "AppName长度限制为4~64");
+        if (xxlJobSQL.getDatasource_name() == null || StringUtils.isBlank(xxlJobSQL.getTask_name())) {
+        	return new ReturnT<String>(500, "请输入数据源");
         }
-        if (xxlJobGroup.getTitle() == null || StringUtils.isBlank(xxlJobGroup.getTitle())) {
-            return new ReturnT<String>(500, "请输入名称");
+        if (xxlJobSQL.getCc_lists() == null || StringUtils.isBlank(xxlJobSQL.getTask_name())) {
+        	return new ReturnT<String>(500, "请输入发件人");
         }
-        if (xxlJobGroup.getAddressType() != 0) {
-            if (StringUtils.isBlank(xxlJobGroup.getAddressList())) {
-                return new ReturnT<String>(500, "手动录入注册方式，机器地址不可为空");
-            }
-            String[] addresss = xxlJobGroup.getAddressList().split(",");
-            for (String item : addresss) {
-                if (StringUtils.isBlank(item)) {
-                    return new ReturnT<String>(500, "机器地址非法");
-                }
-            }
+        if (xxlJobSQL.getRecipient_lists() == null || StringUtils.isBlank(xxlJobSQL.getTask_name())) {
+        	return new ReturnT<String>(500, "请输入收件人");
         }
-
-        int ret = xxlJobGroupDao.save(xxlJobGroup);
+        
+        String sqlList = JSON.toJSONString(xxlJobSQL);
+        int ret = xxlJobSQLDao.save(sqlList);
         return (ret > 0) ? ReturnT.SUCCESS : ReturnT.FAIL;
     }
-
     @RequestMapping("/update")
     @ResponseBody
-    public ReturnT<String> update(XxlJobGroup xxlJobGroup) {
-        // valid
-        if (xxlJobGroup.getAppName() == null || StringUtils.isBlank(xxlJobGroup.getAppName())) {
-            return new ReturnT<String>(500, "请输入AppName");
-        }
-        if (xxlJobGroup.getAppName().length() > 64) {
-            return new ReturnT<String>(500, "AppName长度限制为4~64");
-        }
-        if (xxlJobGroup.getTitle() == null || StringUtils.isBlank(xxlJobGroup.getTitle())) {
-            return new ReturnT<String>(500, "请输入名称");
-        }
-        if (xxlJobGroup.getAddressType() != 0) {
-            if (StringUtils.isBlank(xxlJobGroup.getAddressList())) {
-                return new ReturnT<String>(500, "手动录入注册方式，机器地址不可为空");
-            }
-            String[] addresss = xxlJobGroup.getAddressList().split(",");
-            for (String item : addresss) {
-                if (StringUtils.isBlank(item)) {
-                    return new ReturnT<String>(500, "机器地址非法");
-                }
-            }
-        }
-
-        int ret = xxlJobGroupDao.update(xxlJobGroup);
-        return (ret > 0) ? ReturnT.SUCCESS : ReturnT.FAIL;
+    public ReturnT<String> update(XxlJobSQL xxlJobSQL,int id) {
+    	
+    	// valid
+    	if (xxlJobSQL.getTask_name() == null || StringUtils.isBlank(xxlJobSQL.getTask_name())) {
+    		return new ReturnT<String>(500, "请输入任务名称");
+    	}
+    	if (xxlJobSQL.getDatasource_name() == null || StringUtils.isBlank(xxlJobSQL.getTask_name())) {
+    		return new ReturnT<String>(500, "请输入数据源");
+    	}
+    	if (xxlJobSQL.getCc_lists() == null || StringUtils.isBlank(xxlJobSQL.getTask_name())) {
+    		return new ReturnT<String>(500, "请输入发件人");
+    	}
+    	if (xxlJobSQL.getRecipient_lists() == null || StringUtils.isBlank(xxlJobSQL.getTask_name())) {
+    		return new ReturnT<String>(500, "请输入收件人");
+    	}
+    	
+    	String sqlList = JSON.toJSONString(xxlJobSQL);
+    	xxlJobSQL.setSqlList(sqlList);
+    	xxlJobSQL.setId(id);
+    	int ret = xxlJobSQLDao.update(xxlJobSQL);
+    	return (ret > 0) ? ReturnT.SUCCESS : ReturnT.FAIL;
     }
+
+   /* 
 
     @RequestMapping("/updateSub")
     @ResponseBody
-    public ReturnT<String> updateSub(XxlJobGroup xxlJobGroup) {
+    public ReturnT<String> updateSub(XxlJobSQL xxlJobSQL) {
         // valid
-        if (xxlJobGroup.getAppName() == null || StringUtils.isBlank(xxlJobGroup.getAppName())) {
+        if (xxlJobSQL.getAppName() == null || StringUtils.isBlank(xxlJobSQL.getAppName())) {
             return new ReturnT<String>(500, "请输入AppName");
         }
-        if (xxlJobGroup.getAppName().length() > 64) {
+        if (xxlJobSQL.getAppName().length() > 64) {
             return new ReturnT<String>(500, "AppName长度限制为4~64");
         }
-        if (xxlJobGroup.getTitle() == null || StringUtils.isBlank(xxlJobGroup.getTitle())) {
+        if (xxlJobSQL.getTitle() == null || StringUtils.isBlank(xxlJobSQL.getTitle())) {
             return new ReturnT<String>(500, "请输入名称");
         }
-        if (xxlJobGroup.getAddressType() != 0) {
-            if (StringUtils.isBlank(xxlJobGroup.getAddressList())) {
+        if (xxlJobSQL.getAddressType() != 0) {
+            if (StringUtils.isBlank(xxlJobSQL.getAddressList())) {
                 return new ReturnT<String>(500, "手动录入注册方式，机器地址不可为空");
             }
-            String[] addresss = xxlJobGroup.getAddressList().split(",");
+            String[] addresss = xxlJobSQL.getAddressList().split(",");
             for (String item : addresss) {
                 if (StringUtils.isBlank(item)) {
                     return new ReturnT<String>(500, "机器地址非法");
@@ -140,9 +160,9 @@ public class JobSQLController {
             }
         }
 
-        int ret = xxlJobGroupDao.update(xxlJobGroup);
+        int ret = xxlJobSQLDao.update(xxlJobSQL);
         return (ret > 0) ? ReturnT.SUCCESS : ReturnT.FAIL;
-    }
+    }*/
 
     @RequestMapping("/remove")
     @ResponseBody
@@ -154,12 +174,12 @@ public class JobSQLController {
             return new ReturnT<String>(500, "该分组使用中, 不可删除");
         }
 
-        List<XxlJobGroup> allList = xxlJobGroupDao.findAll();
+        List<XxlJobSQL> allList = xxlJobSQLDao.findAll();
         if (allList.size() == 1) {
             return new ReturnT<String>(500, "删除失败, 系统需要至少预留一个默认分组");
         }
 
-        int ret = xxlJobGroupDao.remove(id);
+        int ret = xxlJobSQLDao.remove(id);
         return (ret > 0) ? ReturnT.SUCCESS : ReturnT.FAIL;
     }
     @RequestMapping("/testsql")
@@ -194,5 +214,7 @@ public class JobSQLController {
             return ReturnT.FAIL;
         }
     }
+    
+    
 
 }
