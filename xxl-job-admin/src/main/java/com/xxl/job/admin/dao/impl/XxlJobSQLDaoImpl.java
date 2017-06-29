@@ -1,6 +1,5 @@
 package com.xxl.job.admin.dao.impl;
 
-import com.xxl.job.admin.core.model.XxlJobGroup;
 import com.xxl.job.admin.core.model.XxlJobInfo;
 import com.xxl.job.admin.core.model.XxlJobSQL;
 import com.xxl.job.admin.dao.IXxlJobSQLDao;
@@ -74,6 +73,12 @@ public class XxlJobSQLDaoImpl implements IXxlJobSQLDao {
     @Override
     public int findAllCount() {
         return sqlSessionTemplate.selectOne("XxlJobInfoMapper.findAllCount");
+    }
+
+    @Override
+    public String querySubTasks(int id) {
+        XxlJobSQL xxlJobSQL = sqlSessionTemplate.selectOne("XxlJobSQLMapper.queryTaskById", id);
+        return xxlJobSQL.getSqlList();
     }
 
 }

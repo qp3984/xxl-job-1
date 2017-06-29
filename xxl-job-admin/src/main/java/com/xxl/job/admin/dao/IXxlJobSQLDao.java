@@ -27,4 +27,11 @@ public interface IXxlJobSQLDao {
 
     public int findAllCount();
 
+    /**
+     * 任务id
+     * @param id
+     * @return
+     */
+    public String querySubTasks(int id);
+
 }

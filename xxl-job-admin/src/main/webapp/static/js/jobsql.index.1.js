@@ -226,17 +226,44 @@ $(function () {
     // updateSub
     $('.updateSub').on('click', function () {
         $("#updateSubModal .form input[name='id']").val($(this).attr("id"));
-        $("#updateSubModal .form input[name='appName']").val($(this).attr("appName"));
-        $("#updateSubModal .form input[name='title']").val($(this).attr("title"));
-        $("#updateSubModal .form input[name='order']").val($(this).attr("order"));
+        // alert($(this).attr("subtasks"));
+        // $("#updateSubModal .form input[name='subtasks']").val($(this).attr("subtasks"));
+        var id = $(this).attr('id');
+        // $.ajax({
+        //     type: 'POST',
+        //     url: base_url + '/jobsql/subTaskList',
+        //     data: {"id": id},
+        //     dataType: "json",
+        //     success: function (data) {
+        //         if (data.code == 200) {
+        //             layer.open({
+        //                 title: '系统提示',
+        //                 content: '删除成功',
+        //                 icon: '1',
+        //                 end: function (layero, index) {
+        //                     window.location.reload();
+        //                 }
+        //             });
+        //         } else {
+        //             layer.open({
+        //                 title: '系统提示',
+        //                 content: (data.msg || "删除失败"),
+        //                 icon: '2'
+        //             });
+        //         }
+        //     },
+        // });
 
-        // 注册方式
-        var addressType = $(this).attr("addressType");
-        $("#updateSubModal .form input[name='addressType']").removeAttr('checked');
-        //$("#updateModal .form input[name='addressType'][value='"+ addressType +"']").attr('checked', 'true');
-        $("#updateSubModal .form input[name='addressType'][value='" + addressType + "']").click();
-        // 机器地址
-        $("#updateSubModal .form input[name='addressList']").val($(this).attr("addressList"));
+        // $("#updateSubModal .form input[name='title']").val($(this).attr("title"));
+        // $("#updateSubModal .form input[name='order']").val($(this).attr("order"));
+
+        // // 注册方式
+        // var addressType = $(this).attr("addressType");
+        // $("#updateSubModal .form input[name='addressType']").removeAttr('checked');
+        // //$("#updateModal .form input[name='addressType'][value='"+ addressType +"']").attr('checked', 'true');
+        // $("#updateSubModal .form input[name='addressType'][value='" + addressType + "']").click();
+        // // 机器地址
+        // $("#updateSubModal .form input[name='addressList']").val($(this).attr("addressList"));
 
         $('#updateSubModal').modal({backdrop: false, keyboard: false}).modal('show');
     });
@@ -310,22 +337,22 @@ $(function () {
         }
     });
     $('.testsql').on('click', function () {
-    	  $.post(base_url + "/jobsql/testsql", $("#updateSubModal .form").serialize(), function (data, status) {
-    		  if (data.code == "200") {
-  				$("#eerMsg").hide();
-  				$("#rigMsg").show();
-  			} else {
-  				$("#errMsg").show();
-  				$("#rigMsg").hide();
-  			}
-          });
-    });
-    
-    $("#rebut").on('click',function(){
-       	$("#msg").hide();
-       	$("#errMsg").hide();
+        $.post(base_url + "/jobsql/testsql", $("#updateSubModal .form").serialize(), function (data, status) {
+            if (data.code == "200") {
+                $("#eerMsg").hide();
+                $("#rigMsg").show();
+            } else {
+                $("#errMsg").show();
+                $("#rigMsg").hide();
+            }
         });
-    
+    });
+
+    $("#rebut").on('click', function () {
+        $("#msg").hide();
+        $("#errMsg").hide();
+    });
+
     $("#updateSubModal").on('hide.bs.modal', function () {
         $("#updateSubModal .form")[0].reset();
         addModalValidate.resetForm();
@@ -353,6 +380,5 @@ $(function () {
         }
     });
 
-   
 
 });

@@ -56,10 +56,20 @@
                                 <#if list?exists && list?size gt 0>
                                     <#list list as group>
                                         <#assign sqllist="${group.sqlList}"?eval />
+
                                     <tr>
                                         <td>${group.id}</td>
                                         <td>${sqllist.task_name}</td>
                                         <td>${sqllist.datasource_name}</td>
+                                    <#--<td>${sqllist.subtasks[0].subtask_name} </td>-->
+                                    <#--<td> <#assign sqllist222="sqllist.subtasks"?eval />-->
+                                    <#--${sqllist222[0].subtask_name}-->
+                                    <#--<td>-->
+                                    <#--<#assign subtaskslists="sqllist.subtasks"?eval />-->
+                                    <#--<#list sqllist.subtasks as item>-->
+                                    <#--id:${item.subtask_name}, name:${item.sql}-->
+                                    <#--</#list>-->
+                                    <#--</td>-->
                                         <td>
                                             <button class="btn btn-warning btn-xs update" data-toggle="modal"
                                                     id="${group.id}"
@@ -71,12 +81,8 @@
                                             </button>
                                             <button class="btn btn-danger btn-xs remove" id="${group.id}">删除</button>
                                             <button class="btn btn-warning btn-xs updateSub" data-toggle="modal"
-                                                    id="${group.id}"
-                                                    appName="${group.appName}"
-                                                    title="${group.title}"
-                                                    order="${group.order}"
-                                                    addressType="${group.addressType}"
-                                                    addressList="${group.addressList}">编辑子任务
+                                                    id="${group.id}" subtasks="${sqllist.subtasks[0].subtask_name}">
+                                                编辑子任务
                                             </button>
 
                                         </td>
@@ -252,36 +258,33 @@
                             <table id="joblog_list" class="table table-bordered table-striped display" width="100%">
                                 <thead>
                                 <tr>
-                                <#--<th name="id" >ID</th>-->
-                                    <th name="order">序号</th>
-                                    <th name="appName">子任务名称</th>
+                                    <th name="id">序号</th>
+                                    <th name="subtasks">子任务名称</th>
                                     <th name="operate">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <#if list?exists && list?size gt 0>
-                                    <#list list as group>
-                                    <tr>
-                                    <#--<td>${group.id}</td>-->
-                                        <td>${group.order}</td>
-                                        <td>${group.appName}</td>
-
-                                        <td>
-                                            <button class="btn btn-warning btn-xs updateSub"
-                                                    id="${group.id}"
-                                                    appName="${group.appName}"
-                                                    title="${group.title}"
-                                                    order="${group.order}"
-                                                    addressType="${group.addressType}"
-                                                    addressList="${group.addressList}">编辑
-                                            </button>
-                                            <button class="btn btn-danger btn-xs remove" id="${group.id}">删除</button>
-                                            <button class="btn btn-warning btn-xs up" id="${group.id}">上移</button>
-                                            <button class="btn btn-warning btn-xs down" id="${group.id}">下移</button>
-                                        </td>
-                                    </tr>
-                                    </#list>
-                                </#if>
+                                <#--<#assign sqllist="${group.sqlList}"?eval />-->
+                                <#list sqllist.subtasks as item>
+                                <#--<#assign var = 1 >-->
+                                <tr>
+                                    <td>${item_index+1}</td>
+                                    <td>${item.subtask_name}</td>
+                                <#--<td>${item.sql}</td>-->
+                                    <td>
+                                        <button class="btn btn-warning btn-xs updateSub"
+                                                id="${item_index+1}"
+                                                subtask_name="${item.subtask_name}"
+                                                sql="${item.sql}">编辑
+                                        </button>
+                                        <button class="btn btn-danger btn-xs remove" id="${item.subtask_name}">删除
+                                        </button>
+                                        <button class="btn btn-warning btn-xs up" id="${item.subtask_name}">上移</button>
+                                        <button class="btn btn-warning btn-xs down" id="${item.subtask_name}">下移
+                                        </button>
+                                    </td>
+                                </tr>
+                                </#list>
                                 </tbody>
                             </table>
                         </div>

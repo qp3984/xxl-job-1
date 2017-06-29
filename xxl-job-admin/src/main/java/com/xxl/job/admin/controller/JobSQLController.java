@@ -1,15 +1,15 @@
 package com.xxl.job.admin.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.xxl.job.admin.core.model.XxlJobGroup;
 import com.xxl.job.admin.core.model.XxlJobSQL;
 import com.xxl.job.admin.core.model.XxlJobSubSQL;
-import com.xxl.job.admin.core.thread.JobRegistryMonitorHelper;
 import com.xxl.job.admin.dao.IXxlJobGroupDao;
 import com.xxl.job.admin.dao.IXxlJobInfoDao;
 import com.xxl.job.admin.dao.IXxlJobSQLDao;
 import com.xxl.job.core.biz.model.ReturnT;
-import com.xxl.job.core.enums.RegistryConfig;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +21,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -41,16 +40,21 @@ public class JobSQLController {
     public String index(Model model) {
 
         List<XxlJobSQL> list = xxlJobSQLDao.findAll();
-
-//        if (CollectionUtils.isNotEmpty(list)) {
-//            for (XxlJobSQL sqllist : list) {
-//
-//            }
-//        }
-
         model.addAttribute("list", list);
         return "jobsql/jobsql.index";
     }
+
+    @RequestMapping("/subTaskList")
+    @ResponseBody
+    public ReturnT<String> subTaskList(XxlJobSQL xxlJobSQL) {
+        int id = xxlJobSQL.getId();
+        String subTasks = xxlJobSQLDao.querySubTasks(id);
+        JSONObject jsonObject=JSON.parseObject(subTasks);//json字符串转换成jsonobject对象
+        JSONArray jsonArray = jsonObject.getJSONArray("subtasks");
+        String jsonStr = jsonArray.toJSONString();//JSONArray转化json字符串
+        return new ReturnT<String>(jsonStr);
+    }
+
 
     @RequestMapping("/save")
     @ResponseBody
