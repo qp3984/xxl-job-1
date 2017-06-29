@@ -22,6 +22,7 @@ public class XxlJobSQLDaoImpl implements IXxlJobSQLDao {
 
     @Override
     public List<XxlJobSQL> findAll() {
+    	System.out.println(sqlSessionTemplate.selectList("XxlJobSQLMapper.findAll"));
         return sqlSessionTemplate.selectList("XxlJobSQLMapper.findAll");
     }
     @Override
@@ -47,8 +48,8 @@ public class XxlJobSQLDaoImpl implements IXxlJobSQLDao {
     }
 
     @Override
-    public int save(XxlJobInfo info) {
-        return sqlSessionTemplate.insert("XxlJobInfoMapper.save", info);
+    public int save(String sqlList) {
+        return sqlSessionTemplate.insert("XxlJobSQLMapper.save", sqlList);
     }
 
     @Override
@@ -57,13 +58,13 @@ public class XxlJobSQLDaoImpl implements IXxlJobSQLDao {
     }
 
     @Override
-    public int update(XxlJobInfo item) {
-        return sqlSessionTemplate.update("XxlJobInfoMapper.update", item);
+    public int update(XxlJobSQL xxlJobSQL) {
+        return sqlSessionTemplate.update("XxlJobSQLMapper.update",xxlJobSQL);
     }
 
     @Override
-    public int delete(int id) {
-        return sqlSessionTemplate.update("XxlJobInfoMapper.delete", id);
+    public int remove(int id) {
+        return sqlSessionTemplate.update("XxlJobSQLMapper.remove", id);
     }
 
     @Override

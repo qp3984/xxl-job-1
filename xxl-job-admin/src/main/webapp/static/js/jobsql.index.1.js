@@ -34,13 +34,9 @@ $(function () {
         });
 
     });
-
+   
     // jquery.validate 自定义校验 “英文字母开头，只含有英文字母、数字和下划线”
-    jQuery.validator.addMethod("myValid01", function (value, element) {
-        var length = value.length;
-        var valid = /^[a-z][a-zA-Z0-9-]*$/;
-        return this.optional(element) || valid.test(value);
-    }, "限制以小写字母开头，由小写字母、数字和下划线组成");
+    
 
     $('.add').on('click', function () {
         $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');
@@ -50,35 +46,35 @@ $(function () {
         errorClass: 'help-block',
         focusInvalid: true,
         rules: {
-            appName: {
+        	task_name: {
                 required: true,
-                rangelength: [4, 64],
-                myValid01: true
+                rangelength: [4, 1000],
+               
             },
-            title: {
+            cc_lists: {
                 required: true,
-                rangelength: [4, 12]
+                rangelength: [4, 1000]
             },
-            order: {
-                required: true,
-                digits: true,
-                range: [1, 1000]
+            recipient_lists: {
+            	required: true,
+            	rangelength: [4, 1000]
             }
+            
         },
         messages: {
-            appName: {
-                required: "请输入“AppName”",
-                rangelength: "AppName长度限制为4~64",
-                myValid01: "限制以小写字母开头，由小写字母、数字和中划线组成"
+        	task_name: {
+                required: "请输入“任务名称”",
+                rangelength: "任务名称长度限制为4~64"
+                
             },
-            title: {
-                required: "请输入“执行器名称”",
-                rangelength: "长度限制为4~12"
+            cc_lists: {
+                required: "请输入“发件人”",
+                rangelength: "发件人长度限制为4~12"
             },
-            order: {
-                required: "请输入“排序”",
-                digits: "请输入整数",
-                range: "取值范围为1~1000"
+            recipient_lists: {
+                required: "请输入“收件人”",
+                rangelength: "收件人长度限制为4~12"
+               
             }
         },
         highlight: function (element) {
@@ -133,55 +129,53 @@ $(function () {
 
     // update
     $('.update').on('click', function () {
+    	$('#updateModal').modal({backdrop: false, keyboard: false}).modal('show');
+        $("#updateModal .form input[name='task_name']").val($(this).attr("task_name"));
+        $("#updateModal .form input[name='cc_lists']").val($(this).attr("cc_lists"));
+        $("#updateModal .form input[name='recipient_lists']").val($(this).attr("recipient_lists"));
         $("#updateModal .form input[name='id']").val($(this).attr("id"));
-        $("#updateModal .form input[name='appName']").val($(this).attr("appName"));
-        $("#updateModal .form input[name='title']").val($(this).attr("title"));
-        $("#updateModal .form input[name='order']").val($(this).attr("order"));
 
         // 注册方式
-        var addressType = $(this).attr("addressType");
-        $("#updateModal .form input[name='addressType']").removeAttr('checked');
-        //$("#updateModal .form input[name='addressType'][value='"+ addressType +"']").attr('checked', 'true');
-        $("#updateModal .form input[name='addressType'][value='" + addressType + "']").click();
-        // 机器地址
-        $("#updateModal .form input[name='addressList']").val($(this).attr("addressList"));
-
-        $('#updateModal').modal({backdrop: false, keyboard: false}).modal('show');
+        var datasource_name = $(this).attr("datasource_name");
+      
+        $("#updateModal .form select[name='datasource_name'][value='"+ datasource_name +"']").attr('selected', 'true');
+       
+       
     });
     var updateModalValidate = $("#updateModal .form").validate({
         errorElement: 'span',
         errorClass: 'help-block',
         focusInvalid: true,
         rules: {
-            appName: {
+        	task_name: {
                 required: true,
-                rangelength: [4, 64],
-                myValid01: true
+                rangelength: [4, 1000],
+               
             },
-            title: {
+            cc_lists: {
                 required: true,
-                rangelength: [4, 12]
+                rangelength: [4, 1000]
             },
-            order: {
-                required: true,
-                digits: true,
-                range: [1, 1000]
+            recipient_lists: {
+            	required: true,
+            	rangelength: [4, 1000]
             }
+            
         },
         messages: {
-            appName: {
+        	task_name: {
                 required: "请输入“AppName”",
-                rangelength: "AppName长度限制为4~64",
-                myValid01: "限制以小写字母开头，由小写字母、数字和中划线组成"
+                rangelength: "AppName长度限制为4~64"
+                
             },
-            title: {
+            cc_lists: {
                 required: "请输入“执行器名称”",
                 rangelength: "长度限制为4~12"
             },
-            order: {
+            recipient_lists: {
                 required: "请输入“排序”",
-                digits: "请输入整数",
-                range: "取值范围为1~1000"
+                rangelength: "长度限制为4~12"
+               
             }
         },
         highlight: function (element) {

@@ -63,11 +63,11 @@
                                         <td>
                                             <button class="btn btn-warning btn-xs update" data-toggle="modal"
                                                     id="${group.id}"
-                                                    appName="${group.appName}"
-                                                    title="${group.title}"
-                                                    order="${group.order}"
-                                                    addressType="${group.addressType}"
-                                                    addressList="${group.addressList}">编辑任务
+                                                    task_name="${sqllist.task_name}"
+                                                    datasource_name="${sqllist.datasource_name}"
+                                                    cc_lists="${sqllist.cc_lists}"
+                                                    recipient_lists="${sqllist.recipient_lists}"
+                                                             >编辑任务
                                             </button>
                                             <button class="btn btn-danger btn-xs remove" id="${group.id}">删除</button>
                                             <button class="btn btn-warning btn-xs updateSub" data-toggle="modal"
@@ -104,7 +104,7 @@
                     <form class="form-horizontal form" role="form">
                         <div class="form-group">
                             <label for="lastname" class="col-sm-2 control-label">任务名称：<font color="red">*</font></label>
-                            <div class="col-sm-10"><input type="text" class="form-control" name="order"
+                            <div class="col-sm-10"><input type="text" class="form-control" name="task_name"
                                                           placeholder="请输入“排序”" maxlength="50"></div>
                         </div>
 
@@ -113,33 +113,31 @@
                             <label for="lastname" class="col-sm-2 control-label">选择数据源：<font
                                     color="red">*</font></label>
                             <div class="col-sm-10">
-                                <select class="form-control glueType" name="glueType">
-                                <#--<#list GlueTypeEnum as item>-->
-                                <#--<option value="${item}" >${item.desc}</option>-->
-                                    <option value="mysql_101">测试101Mysql数据源</option>
-                                    <option value="oracle23">生产报表oracle数据源</option>
-                                <#--</#list>-->
+                                <select class="form-control glueType" name="datasource_name">
+                                <#list echoList as item>
+                                <option value="${item}" >${item}</option>
+                                </#list>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="lastname" class="col-sm-2 control-label">发送邮件列表：<font
                                     color="red">*</font></label>
-                            <div class="col-sm-10"><input type="text" class="form-control" name="appName"
-                                                          placeholder="请输入“AppName”" maxlength="64"></div>
+                            <div class="col-sm-10"><input type="text" class="form-control" name="cc_lists"
+                                                          placeholder="请输入“AppName”" ></div>
                         </div>
                         <div class="form-group">
                             <label for="lastname" class="col-sm-2 control-label">抄送邮件列表：<font
                                     color="red">*</font></label>
-                            <div class="col-sm-10"><input type="text" class="form-control" name="title"
-                                                          placeholder="请输入“名称”" maxlength="12"></div>
+                            <div class="col-sm-10"><input type="text" class="form-control" name="recipient_lists"
+                                                          placeholder="请输入“名称”" ></div>
                         </div>
 
 
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-6">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">保存</button>
-                                <button type="button" id="misbut" class="btn btn-default" data-dismiss="modal">取消
+                                <button type="submit" class="btn btn-primary"  >保存</button>
+                                <button type="button"  class="btn btn-default" data-dismiss="modal">取消
                                 </button>
                             </div>
                         </div>
@@ -161,40 +159,38 @@
                     <form class="form-horizontal form" role="form">
                         <div class="form-group">
                             <label for="lastname" class="col-sm-2 control-label">任务名称：<font color="red">*</font></label>
-                            <div class="col-sm-10"><input type="text" class="form-control" name="order"
+                            <div class="col-sm-10"><input type="text" class="form-control" name="task_name"
                                                           placeholder="请输入任务名称" maxlength="50"></div>
                         </div>
                         <div class="form-group">
                             <label for="lastname" class="col-sm-2 control-label">选择数据源：<font
                                     color="red">*</font></label>
                             <div class="col-sm-10">
-                                <select class="form-control glueType" name="glueType">
-                                <#--<#list GlueTypeEnum as item>-->
-                                <#--<option value="${item}" >${item.desc}</option>-->
-                                    <option value="mysql_101">测试101Mysql数据源</option>
-                                    <option value="oracle23">生产报表oracle数据源</option>
-                                <#--</#list>-->
+                                <select class="form-control glueType" name="datasource_name">
+                                <#list echoList as item>
+                                <option value="${item}" >${item}</option>
+                                </#list>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="lastname" class="col-sm-2 control-label">发送邮件列表：<font
                                     color="red">*</font></label>
-                            <div class="col-sm-10"><input type="text" class="form-control" name="appName"
-                                                          placeholder="请输入发件人列表”" maxlength="64"></div>
+                            <div class="col-sm-10"><input type="text" class="form-control" name="cc_lists"
+                                                          placeholder="请输入发件人列表”" ></div>
                         </div>
                         <div class="form-group">
                             <label for="lastname" class="col-sm-2 control-label">抄送邮件列表：<font
                                     color="red">*</font></label>
-                            <div class="col-sm-10"><input type="text" class="form-control" name="title"
-                                                          placeholder="请输入“名称”" maxlength="12"></div>
+                            <div class="col-sm-10"><input type="text" class="form-control" name="recipient_lists"
+                                                          placeholder="请输入“名称”" ></div>
                         </div>
 
                         <hr>
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-6">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">保存</button>
-                                <button type="button" id="misbut" class="btn btn-default" data-dismiss="modal">取消
+                                <button type="submit" class="btn btn-primary"  >保存</button>
+                                <button type="button"  class="btn btn-default" data-dismiss="modal">取消
                                 </button>
                                 <input type="hidden" name="id">
                             </div>
