@@ -3,6 +3,7 @@ package com.xxl.job.admin.service.impl;
 import com.xxl.job.admin.core.enums.ExecutorFailStrategyEnum;
 import com.xxl.job.admin.core.model.XxlJobGroup;
 import com.xxl.job.admin.core.model.XxlJobInfo;
+import com.xxl.job.admin.core.model.XxlJobMetaData;
 import com.xxl.job.admin.core.route.ExecutorRouteStrategyEnum;
 import com.xxl.job.admin.core.schedule.XxlJobDynamicScheduler;
 import com.xxl.job.admin.core.thread.JobRegistryMonitorHelper;
@@ -46,6 +47,22 @@ public class XxlJobServiceImpl implements IXxlJobService {
 
     @Resource
     private IXxlJobSQLDao xxlJobSQLDao;
+    
+    @Resource
+    private IXxlJobMetaDataDao xxlJobMetaDataDao;
+    
+    @Override
+	public Map<String, Object> metaDataPageList(int start, int length, String tableName) {
+    	 // page list
+        List<XxlJobMetaData> list = xxlJobMetaDataDao.pageList(start, length, tableName);
+        int list_count = xxlJobMetaDataDao.pageListCount(start, length,tableName);
+        // package result
+        Map<String, Object> maps = new HashMap<String, Object>();
+        maps.put("recordsTotal", list_count);        // 总记录数
+        maps.put("recordsFiltered", list_count);    // 过滤后的总记录数
+        maps.put("data", list);                    // 分页列表
+        return maps;
+	}
 
     @Override
     public Map<String, Object> pageList(int start, int length, int jobGroup, String executorHandler, String filterTime) {
@@ -366,5 +383,7 @@ public class XxlJobServiceImpl implements IXxlJobService {
         result.put("triggerCountFailTotal", triggerCountFailTotal);
         return new ReturnT<Map<String, Object>>(result);
     }
+
+	
 
 }

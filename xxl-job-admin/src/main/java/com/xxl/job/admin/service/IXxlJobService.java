@@ -15,6 +15,8 @@ public interface IXxlJobService {
 	
 	public Map<String, Object> pageList(int start, int length, int jobGroup, String executorHandler, String filterTime);
 	
+	public Map<String, Object> metaDataPageList(int start, int length,String tableName);
+	
 	public ReturnT<String> add(XxlJobInfo jobInfo);
 	
 	public ReturnT<String> reschedule(XxlJobInfo jobInfo);

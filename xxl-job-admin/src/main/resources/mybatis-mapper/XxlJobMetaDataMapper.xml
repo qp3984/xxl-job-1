@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="XxlJobMetaDataMapper">
+	
+	<resultMap id="XxlJobMetaData" type="com.xxl.job.admin.core.model.XxlJobMetaData" >
+	
+	
+
+		<result column="ip" property="ip" />
+	
+		<result column="dcmOwner" property="dcmOwner" />
+	    <result column="tableName" property="tableName" />
+	    <result column="columnName" property="columnName" />
+	    
+	    <result column="columnClass" property="columnClass" />
+	    <result column="columnSize" property="columnSize" />
+	    
+	    <result column="columnExplain" property="columnExplain" />
+ 		<result column="falg" property="falg" />
+ 		<result column="dateTime" property="dateTime" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		t.ip,
+		t.dcmOwner,
+		t.tableName,
+		t.columnName,
+		t.columnClass,
+		t.columnSize,
+		t.columnExplain,
+		t.falg,
+		t.dateTime
+	</sql>
+	
+	<select id="findAll" parameterType="java.lang.Integer" resultMap="XxlJobMetaData">
+		SELECT <include refid="Base_Column_List" />
+		FROM XXL_JOB_QRTZ_METADATA AS t
+	</select>
+	
+	
+	<select id="pageListCount" parameterType="java.util.HashMap" resultType="int">
+		SELECT count(1)
+		FROM XXL_JOB_QRTZ_METADATA AS t
+		<trim prefix="WHERE" prefixOverrides="AND | OR" >
+			<if test="tableName != null and tableName != ''">
+				AND t.tableName like CONCAT(CONCAT('%', #{tableName}), '%')
+			</if>
+		</trim>
+	</select>
+	
+	<select id="pageList" parameterType="java.util.HashMap" resultMap="XxlJobMetaData">
+		SELECT <include refid="Base_Column_List" />
+		FROM XXL_JOB_QRTZ_METADATA AS t
+		<trim prefix="WHERE" prefixOverrides="AND | OR" >
+			<if test="tableName != null and tableName != ''">
+				AND t.tableName like CONCAT(CONCAT('%', #{tableName}), '%')
+			</if>
+		</trim>
+		ORDER BY t.dateTime DESC
+		LIMIT #{offset}, #{pagesize}
+	</select>
+	
+	<select id="selectList" parameterType="java.util.HashMap" resultMap="XxlJobMetaData">
+		SELECT <include refid="Base_Column_List" />
+		FROM XXL_JOB_QRTZ_METADATA AS t
+	<trim prefix="WHERE" prefixOverrides="AND | OR" >
+			<if test="tableName != null and tableName != ''">
+				AND t.tableName like CONCAT(CONCAT('%', #{tableName}), '%')
+			</if>
+		</trim>
+		order by t.dateTime
+		LIMIT 10
+	</select>
+	
+	
+	<select id="select" parameterType="java.util.HashMap" resultMap="XxlJobMetaData">
+		SELECT <include refid="Base_Column_List" />
+		FROM XXL_JOB_QRTZ_METADATA AS t
+		<trim prefix="WHERE" prefixOverrides="AND | OR" >
+			<if test="tableName != null and tableName != ''">
+				AND  	t.ip=#{ip}
+			</if>
+			<if test="tableName != null and tableName != ''">
+				AND	t.dcmOwner=#{dcmOwner}
+			</if>
+			<if test="tableName != null and tableName != ''">
+				AND t.tableName =#{tableName}
+			</if>
+			<if test="tableName != null and tableName != ''">
+				AND t.columnName=#{columnName}
+			</if>
+		</trim>	
+		order by t.dateTime desc
+		LIMIT 10
+	</select>
+	
+</mapper>
